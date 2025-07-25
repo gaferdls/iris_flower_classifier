@@ -1,4 +1,6 @@
 from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -102,3 +104,39 @@ plt.figure(figsize=(8,6))
 sns.heatmap(correlation_matrix, annot = True, cmap = 'coolwarm', fmt = ".2f")
 plt.title('Correlation Matrix of Iris Features')
 plt.show()
+
+# X will contain our features
+X = df[iris.feature_names]
+
+# y will contain our target variable (the species as numerical labels 0, 1, 2)
+Y = df['species']
+
+print("Features (X) shape:", X.shape)
+print("Target (y) shape:", Y.shape)
+print("\nFirst 5 rows of X:")
+print(X.head())
+print("\nFirst 5 values of Y:")
+print(Y.head())
+
+# Split the data into training and testing sets
+# test_size = 0.30 means 30% of the data will be used for testing, 70 for training
+# random_state ensures reproducibility (you'll get the same split every time you run it)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.30, random_state = 42)
+
+print("\nTraining Features (X_train) shape:", X_train.shape)
+print("Testing Features (X_test) shape:", X_test.shape)
+print("Training Target (Y_train) shape:", Y_train.shape)
+print("Testing Target (Y_test) shape:", Y_test.shape)
+
+# Initialize the KNN classifier
+# n_neighbors is 'k', the number of neighbors to consider.
+# A common starting point is 3 or 5. Let's start with 3.
+knn_model = KNeighborsClassifier(n_neighbors = 5)
+
+print("\nKNN Model Initialized:")
+print(knn_model)
+
+# Train the model using the training data
+knn_model.fit(X_train, Y_train)
+
+print("\nKNN Model trained successfully!")
