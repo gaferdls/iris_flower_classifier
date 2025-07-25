@@ -1,6 +1,7 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -140,3 +141,34 @@ print(knn_model)
 knn_model.fit(X_train, Y_train)
 
 print("\nKNN Model trained successfully!")
+
+# Make predictions on the test set
+Y_pred = knn_model.predict(X_test)
+
+print("\nFirst 10 actual labels (Y_test):")
+print(Y_test.head(10).values) #This shows the array and not the series index
+print("\nFirst 10 predicted labels (Y_pred):")
+print(Y_pred[:10])
+
+# Calculate accuracy
+accuracy = accuracy_score(Y_test, Y_pred)
+print(f"\nModel Accuracy: {accuracy:.4f}")
+
+# Generate Confusion Matrix
+conf_matrix = confusion_matrix(Y_test, Y_pred)
+print("\nConfusion Matrix:")
+print(conf_matrix)
+
+# Plotting the Confusion Matrix for better visualization
+plt.figure(figsize = (8,6))
+sns.heatmap(conf_matrix, annot = True, fmt = 'd', cmap = 'Blues', xticklabels = iris.target_names,
+            yticklabels = iris.target_names)
+plt.xlabel('Predicted Species')
+plt.ylabel('Actual Species')
+plt.title('Confusion Matrix for Iris Classification')
+plt.show()
+
+# Generate Classification Report
+class_report = classification_report(Y_test, Y_pred, target_names = iris.target_names)
+print("\nClassification Report:")
+print(class_report)
